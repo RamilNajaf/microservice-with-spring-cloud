@@ -1,13 +1,25 @@
 version: "3.8"
 
 services:
+  eureka:
+    build:
+      context: ./eureka
+      dockerfile: Dockerfile
+    ports:
+      - "8070:8070"
+    networks:
+      - microservice-network
 
   accounts:
     build:
         context: ./accounts
         dockerfile: Dockerfile
-    image: service/account
+    image: service/accounts
     container_name: account-service
+    environment:
+      - eureka.client.serviceUrl.defaultZone = http://eureka:8070/eureka/
+    depends_on:
+      - eureka
     ports:
       - "8080:8080"
     networks:
@@ -19,10 +31,15 @@ services:
         dockerfile: Dockerfile
     image: service/loan
     container_name: loan-service
+    environment:
+      - eureka.client.serviceUrl.defaultZone = http://eureka:8070/eureka/
+    depends_on:
+      - eureka
     ports:
       - "8090:8090"
     networks:
       - microservice-network
+
 
   cards:
     build:
@@ -30,10 +47,15 @@ services:
         dockerfile: Dockerfile
     image: service/card
     container_name: card-service
+    environment:
+      - eureka.client.serviceUrl.defaultZone = http://eureka:8070/eureka/
+    depends_on:
+      - eureka
     ports:
       - "9000:9000"
     networks:
        - microservice-network
+
 
 networks:
   microservice-network:
