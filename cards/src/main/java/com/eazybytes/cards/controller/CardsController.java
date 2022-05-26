@@ -19,7 +19,7 @@ public class CardsController {
 	@Autowired
 	private CardsRepository cardsRepository;
 
-	@GetMapping("/myCards")
+	@PostMapping("/myCards")
 	public List<Cards> getCardDetails(@RequestBody Customer customer) {
 		List<Cards> cards = cardsRepository.findByCustomerId(customer.getCustomerId());
 		if (cards != null) {
