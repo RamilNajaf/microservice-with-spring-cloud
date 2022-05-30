@@ -40,7 +40,6 @@ services:
     networks:
       - microservice-network
 
-
   cards:
     build:
         context: ./cards
@@ -55,6 +54,33 @@ services:
       - "9000:9000"
     networks:
        - microservice-network
+
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    image: service/gateway
+    container_name: gateway-service
+    environment:
+      - eureka.client.serviceUrl.defaultZone = http://eureka:8070/eureka/
+    ports:
+      - "8072:8072"
+    depends_on:
+      - eureka
+      - cards
+      - loans
+      - accounts
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 45s
+        max_attempts: 3
+        window: 180s
+
+    networks:
+      - microservice-network
+
+
 
 
 networks:
