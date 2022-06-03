@@ -5,6 +5,10 @@ package com.eazybytes.accounts.controller;
 
 import com.eazybytes.accounts.service.client.CardsFeignClient;
 import com.eazybytes.accounts.service.client.LoansFeignClient;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +22,10 @@ import com.eazybytes.accounts.dto.*;
 import java.util.List;
 
 
+
 @RestController
 public class AccountsController {
+   Logger logger = LoggerFactory.getLogger(AccountsController.class);
 
 	private final AccountsRepository accountsRepository;
 
@@ -48,6 +54,7 @@ public class AccountsController {
 
 	@PostMapping("/myCustomerDetails")
 	public CustomerDetailDTO myCustomerDetails(@RequestBody Customer customer) {
+		logger.info("customer details started");
 
 		Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId());
 
@@ -59,6 +66,7 @@ public class AccountsController {
 		customerDetails.setLoans(loans);
 		customerDetails.setCards(cards);
 
+		logger.info("customer details ended");
 		return customerDetails;
 
 	}

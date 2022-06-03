@@ -15,7 +15,4 @@ public class CustomerDetailDTO {
     private Accounts accounts;
     private List<LoanDTO> loans;
     private List<CardDTO> cards;
-
-
-
 }
